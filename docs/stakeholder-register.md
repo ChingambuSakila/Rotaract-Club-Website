@@ -2,7 +2,7 @@
 
 **Project:** Rotaract Club of UNZA Website\
 **Document ID:** STK-001\
-**Version:** 1.0\
+**Version:** 1.1\
 **Status:** Draft for stakeholder confirmation\
 **Last updated:** 18 October 2026\
 **Target launch:** 30 November 2026\
@@ -138,49 +138,29 @@ Because stakeholder availability is limited, use one consolidated review
 document and a short decision meeting or written response rather than
 scheduling many separate meetings.
 
-## 5. Open Stakeholder Questions
+## 5. Recommended Decisions for Stakeholder Review
 
-  ------------------------------------------------------------------------------
-  ID                Question                 Owner to consult  Status
-  ----------------- ------------------------ ----------------- -----------------
-  OQ-01             Which board roles may    President / Board Open
-                    create, edit, publish,                     
-                    archive, and delete                        
-                    content?                                   
+These recommendations reduce ambiguity and keep the first release achievable by one developer before the 30 November 2026 target. They are proposals, not approvals.
 
-  OQ-02             Who can create, disable, President / Board Open
-                    or reset administrator                     
-                    accounts?                                  
+1. **Administrator permissions:** Site Administrator (President plus a named successor) controls admin accounts and global settings; Content Managers from the Board/PIC publish and manage public content; Enquiry Manager (Secretary/designated contact) handles contact submissions. Individual accounts only; no public admin registration or shared passwords.
+2. **Hosting/budget:** managed shared PHP/MySQL hosting for the first year; compare at least two providers; plan around US$50–100 for domain and hosting combined, excluding paid email and extras. Confirm renewal pricing before payment and ensure the club owns the accounts.
+3. **Content management:** events require title, date/time, location, short description; news requires title and body; projects require title, description, date/period. Keep impact measures and images optional. Publish directly for authorized users; prefer archive/soft-delete over permanent deletion.
+4. **Enquiries:** save every enquiry to the protected dashboard; send an email notification only if SMTP is configured and tested. A proposed starting retention period is 12 months after closure, subject to club approval.
 
-  OQ-03             Should contact enquiries Board /           Open
-                    be stored only in the    designated        
-                    dashboard, or should     contact           
-                    email notifications also                   
-                    be sent?                                   
+## 6. Open Stakeholder Questions
 
-  OQ-04             Should content be        Board / Public    Open
-                    permanently deleted or   Image Committee   
-                    archived/soft-deleted?                     
+| ID | Question / decision | Owner to consult | Status |
+|---|---|---|---|
+| OQ-01 | Approve proposed Site Administrator, Content Manager, and Enquiry Manager roles and role boundaries | President / Board | Proposed for approval |
+| OQ-02 | Confirm named Site Administrators and whether account-management UI is needed for launch | President / Board | Proposed for approval |
+| OQ-03 | Should contact enquiries be stored in the dashboard only, or also trigger tested email notifications? | Board / designated contact | Open |
+| OQ-04 | Approve archive/soft-delete default and permanent-deletion rights | Board / Public Image Committee | Proposed for approval |
+| OQ-05 | Approve recommended required/optional event, news, and project fields | Public Image Committee / Secretary | Proposed for approval |
+| OQ-06 | Select domain/hosting provider and approve upfront and annual renewal price | President / Treasurer / Developer | Open |
+| OQ-07 | Are supplied photographs, stories, and impact figures accurate and approved for public use? | Public Image Committee / content owner | Open |
+| OQ-08 | Who will maintain the site and its content after the developer's initial delivery? | Board | Open |
 
-  OQ-05             What fields are          Public Image      Open
-                    mandatory for events,    Committee /       
-                    news, and service        Secretary         
-                    project reports?                           
-
-  OQ-06             What domain and hosting  President /       Open
-                    budget is available?     Treasurer         
-
-  OQ-07             Are all supplied         Public Image      Open
-                    photographs and stories  Committee /       
-                    approved for public use? content owner     
-
-  OQ-08             Who will maintain the    Board             Open
-                    site after the                             
-                    developer's initial                        
-                    delivery?                                  
-  ------------------------------------------------------------------------------
-
-## 6. Approval
+## 7. Approval
 
 This register identifies expected stakeholders and engagement needs. It
 does not mean that each stakeholder has approved the requirements.
