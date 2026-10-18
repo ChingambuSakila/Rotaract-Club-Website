@@ -1,172 +1,102 @@
-# Stakeholder Register --- Rotaract Club Website
+# 📋 Stakeholder Register — Rotaract Club Website
 
-**Project:** Rotaract Club of UNZA Website\
-**Document ID:** STK-001\
-**Version:** 1.1\
-**Status:** Draft for stakeholder confirmation\
-**Last updated:** 18 October 2026\
-**Target launch:** 30 November 2026\
-**Owner:** Project Developer
+| Metadata Field | Project Information |
+| :--- | :--- |
+| **Project Name** | Rotaract Club of UNZA Website |
+| **Document ID** | `STK-001` |
+| **Version** | `1.1` |
+| **Status** | 🟡 Draft for stakeholder confirmation |
+| **Last Updated** | 18 October 2026 |
+| **Target Launch** | 🎯 30 November 2026 |
+| **Document Owner**| Project Developer |
 
-## 1. Purpose
+---
 
-This register identifies people and groups who influence, use, maintain,
-or are affected by the website. It records their interests, expected
-involvement, and the approach for eliciting and validating requirements.
+## 1. 🎯 Purpose
 
-The developer is building the first release independently. Stakeholder
-availability is expected to be limited, so reviews should be focused and
-time-boxed.
+This register identifies individuals and key groups who influence, use, maintain, or are affected by the website. It outlines their interests, expected involvement level, and the strategies for eliciting and validating system requirements.
 
-## 2. Stakeholder Register
+> **Note on Project Scope & Constraints:**  
+> The developer is building the initial release independently. Because stakeholder availability is expected to be limited, reviews will be focused, time-boxed, and conducted using consolidated documentation.
 
-  ----------------------------------------------------------------------------------------------------------
-  ID          Stakeholder /      Role and         Influence     Engagement approach Requirements / decisions
-              group              interest                                           needed
-  ----------- ------------------ ---------------- ------------- ------------------- ------------------------
-  ST-01       Club President     Accountable club High          One focused review  Confirm purpose, launch
-                                 leader; wants a                of project scope    scope, public
-                                 professional                   and public-facing   information, and who may
-                                 online presence                content; request    administer content.
-                                 and accurate                   decisions in        
-                                 representation                 writing where       
-                                 of the club.                   possible.           
+---
 
-  ST-02       Club Board Members Club governance  High          Short review of     Confirm which board
-                                 and operational                role permissions    roles can manage events,
-                                 leadership; may                and content         news, projects, club
-                                 need to update                 responsibilities.   details, and
-                                 or oversee club                                    administrator accounts.
-                                 information.                                       
+## 2. 👥 Stakeholder Register
 
-  ST-03       Public Image       Likely           High for      Request a list of   Confirm content
-              Committee members  contributors and content       content types,      responsibilities, image
-                                 managers of      workflow      required fields,    usage, required fields,
-                                 news,                          branding assets,    and whether publishing
-                                 photographs,                   and publishing      may occur immediately.
-                                 announcements,                 expectations.       
-                                 and                                                
-                                 public-facing                                      
-                                 content.                                           
+| ID | Stakeholder / Group | Role & Interest | Influence | Engagement Approach | Key Requirements / Decisions Needed |
+| :---: | :--- | :--- | :---: | :--- | :--- |
+| **ST-01** | **Club President** | Accountable club leader; wants a professional online presence and accurate representation of the club. | 🔴 **High** | One focused review of project scope and public content; request decisions in writing where possible. | Confirm purpose, launch scope, public information, and admin delegated authorities. |
+| **ST-02** | **Club Board Members** | Operational leadership; needs capability to oversee or update official club information. | 🔴 **High** | Short targeted review of role permissions and content responsibilities. | Confirm board roles for managing events, news, projects, club details, and admin accounts. |
+| **ST-03** | **Public Image Committee** | Primary content managers for news, photography, announcements, and branding. | 🔴 **High** *(Content)* | Request list of content types, required metadata fields, branding assets, and publishing expectations. | Confirm content workflows, image usage rights, required fields, and publishing authorization. |
+| **ST-04** | **Club Secretary / Info Owner** | Holds official records of events, leadership details, and historical club data. | 🟡 **Med–High** | Request verified event details, leadership rosters, and official club contacts. | Confirm information accuracy, update frequency, and deprecation process for old data. |
+| **ST-05** | **Club Members** | General audience browsing public content; future users of member-only features. | 🟡 **Medium** | Optional short questionnaire or informal review. *(No member portal in v1.0)* | Identify general usability feedback and log requests for future member account capabilities. |
+| **ST-06** | **Prospective Members** | Visitors seeking to understand club activities and submit membership enquiries. | 🟡 **Medium** | Review public landing pages and contact flow with representative test users. | Confirm membership path clarity and requirements for a dedicated enquiry form. |
+| **ST-07** | **General Public / Partners** | Seek reliable information on community projects, events, and partnership impact. | 🟡 **Medium** | Validate clarity of public-facing project impact and contact information. | Confirm which project outcomes and public contact information are approved for publication. |
+| **ST-08** | **Website Administrator(s)** | Maintains website platform, handles content moderation, and manages dashboard settings. | 🔴 **High** *(Ops)* | Walkthrough of administration tasks, dashboard layout, and permission boundaries. | Confirm authentication, user account lifecycle, content management workflow, and backups. |
+| **ST-09** | **Project Developer** | Elicits requirements, designs, builds, tests, deploys, and documents the website. | 🔴 **High** *(Tech)* | Maintains requirements register, decision logs, traceability matrix, and release checklists. | Resolve technical feasibility, security architecture, hosting setup, and schedule risks. |
+| **ST-10** | **Hosting & Domain Provider** | Provides infrastructure for the web application, web server, and database. | 🟡 **Medium** | Comparative evaluation of cost, PHP/MySQL support, HTTPS SSL, and backup options. | Confirm technical capabilities, domain availability, annual renewal costs, and deployment constraints. |
 
-  ST-04       Club Secretary /   May hold         Medium to     Request verified    Confirm content
-              designated         accurate records high          event details,      accuracy, who supplies
-              information owner  of events,                     leadership          updates, and how
-                                 leadership, and                information, and    outdated information
-                                 club                           official club       should be handled.
-                                 information.                   details.            
+---
 
-  ST-05       Club members       May browse       Medium        Optional short      Identify usability
-                                 public content                 questionnaire or    issues and future
-                                 and later                      informal review; no member-account needs.
-                                 benefit from                   member portal in    
-                                 member-only                    the first release.  
-                                 features.                                          
+## 3. 📌 Confirmed Project Context
 
-  ST-06       Prospective        Need to          Medium        Review the public   Confirm whether
-              members            understand the                 pages and           membership information
-                                 club and how to                contact/enquiry     and a membership enquiry
-                                 make an enquiry.               flow with a small   category are needed.
-                                                                number of           
-                                                                representative      
-                                                                users if feasible.  
+| Aspect | Status / Decision |
+| :--- | :--- |
+| **Target Organization** | Rotaract Club of UNZA (Code base must be modular for reusability across other clubs). |
+| **Multi-Tenancy** | Single-instance web application for Release 1.0 (No multi-tenant architecture). |
+| **User Authentication** | Public visitors can view all content. **Member accounts are deferred** to a future release. |
+| **Content Management** | Board and Public Image Committee manage content. Direct publishing enabled (no multi-step approval workflow for v1.0). |
+| **Resource Allocation** | Solo developer model with constrained stakeholder availability. |
+| **Target Launch Date** | **30 November 2026** |
+| **Budgetary Constraints** | Hosting and domain budget pending approval. |
 
-  ST-07       General public /   Need reliable    Medium        Validate clarity of Confirm which project
-              community partners information                    public content and  outcomes and public
-                                 about projects,                contact details.    contact information may
-                                 events, and                                        be published.
-                                 community                                          
-                                 impact.                                            
+---
 
-  ST-08       Website            Maintain website High          Walk through        Confirm login, account
-              administrator(s)   content and      operational   proposed            creation/deactivation,
-                                 access the       influence     administration      content management,
-                                 dashboard.                     tasks and           backups, and recovery
-                                                                permission          expectations.
-                                                                boundaries.         
+## 4. 🗓️ Engagement Plan
 
-  ST-09       Project developer  Elicits,         High          Maintain            Resolve technical
-                                 specifies,       technical     requirements        feasibility, security,
-                                 designs,         influence     register, decision  architecture, and
-                                 implements,                    log, traceability   schedule risks.
-                                 tests, deploys,                matrix, and release 
-                                 and documents                  checklist.          
-                                 the website.                                       
+| Step | Focus Area | Target Stakeholders | Delivery Method |
+| :---: | :--- | :--- | :--- |
+| **1** | **Brand Assets & Copy** | Public Image Committee, Secretary | Form request for high-res logos, brand guides, contact details, and initial project stories. |
+| **2** | **Scope Alignment** | Club President, Board Representatives | Single consolidated review document covering launch scope and public pages. |
+| **3** | **Content Schemas** | Public Image Committee | Brief schema review covering required vs. optional fields for news, events, and projects. |
+| **4** | **Security & Roles** | Club Board | Approval of proposed 3-tier administrator role and access control model. |
+| **5** | **Issue Management** | Developer / All | Open questions logged centrally in Open Issues Register rather than making silent assumptions. |
+| **6** | **SRS Sign-Off** | President, Developer | Written baseline sign-off prior to full feature construction. |
 
-  ST-10       Hosting/domain     Provides         Medium        Compare cost,       Confirm hosting
-              provider (to be    infrastructure                 PHP/MySQL support,  capabilities, domain
-              selected)          for the public                 HTTPS, backups, and availability, renewal
-                                 website and                    support before      costs, backup options,
-                                 database.                      selection.          and deployment
-                                                                                    constraints.
-  ----------------------------------------------------------------------------------------------------------
+---
 
-## 3. Confirmed Project Context
+## 5. 💡 Recommended Decisions for Review
 
--   The first website is for the **Rotaract Club of UNZA**.
--   The code should be reusable for separate club websites in the
-    future.
--   The first release is not a multi-tenant platform.
--   Public visitors and registered club members may use the
-    public-facing site, but member accounts are deferred.
--   Board members and Public Image Committee members are intended to
-    manage website content; exact permissions still require
-    confirmation.
--   Authorized content managers may publish directly; an approval
-    workflow is not planned for the first release.
--   The developer is working alone, with limited club-member input.
--   The target launch date is **30 November 2026**.
--   The hosting and domain budget is not yet known.
+| Category | Proposal Details | Rationale / Constraint |
+| :--- | :--- | :--- |
+| **1. Admin Roles & Access** | • **Site Admin:** President + 1 Successor (Global controls, user management).<br>• **Content Manager:** Board/PIC (Events, News, Projects management).<br>• **Enquiry Manager:** Secretary/Designated Contact (Form submissions). | Individual accounts only. No shared credentials or public account registration for administrative areas. |
+| **2. Hosting & Infrastructure** | Managed shared PHP/MySQL hosting.<br>• Estimated Budget: **US $50 – $100 / year**.<br>• Requires comparison of at least 2 vendors. | Guarantees affordability, ease of transfer, and verified ownership by official club representatives. |
+| **3. Content Requirements** | • **Events:** Title, Date/Time, Location, Short Description.<br>• **News:** Title, Body Content.<br>• **Projects:** Title, Description, Date/Period.<br>• *Images and metrics are optional.* | Keeps data entry simple for content managers. Prefers soft-delete/archive mechanisms over hard deletion. |
+| **4. Enquiry Handling** | Log all contact form enquiries to the web dashboard database.<br>• Optional: Send immediate email notification if SMTP is configured.<br>• Data Retention: **12 Months** after issue resolution. | Ensures lead capture even if email delivery fails. Maintains compliance and clean data lifecycle. |
 
-## 4. Engagement Plan
+---
 
-1.  Request official logo files, brand colours, club contact details,
-    current leadership information, social links, and approved project
-    content.
-2.  Ask the President or a delegated board member to review the scope
-    and public content.
-3.  Ask the Public Image Committee to confirm the content types and
-    day-to-day publishing needs.
-4.  Ask the relevant board representative to approve the administrator
-    permission model.
-5.  Record unanswered questions in the open-issues register rather than
-    silently treating assumptions as confirmed.
-6.  Obtain written approval of the SRS baseline before implementation of
-    the full feature set.
+## 6. ❓ Open Stakeholder Questions
 
-Because stakeholder availability is limited, use one consolidated review
-document and a short decision meeting or written response rather than
-scheduling many separate meetings.
+| ID | Question / Decision Required | Designated Owner | Current Status |
+| :---: | :--- | :--- | :---: |
+| **OQ-01** | Approve proposed Site Administrator, Content Manager, and Enquiry Manager role boundaries. | President / Board | 🟡 Proposed |
+| **OQ-02** | Confirm named Site Administrators and specify if full user-management UI is required for launch. | President / Board | 🟡 Proposed |
+| **OQ-03** | Should contact submissions trigger automated email notifications in addition to dashboard logging? | Board / Contact Person | 🔴 Open |
+| **OQ-04** | Approve the archive/soft-delete default model vs. permanent record deletion privileges. | Board / Public Image | 🟡 Proposed |
+| **OQ-05** | Approve recommended mandatory and optional field schemas for events, news, and project posts. | Public Image / Secretary | 🟡 Proposed |
+| **OQ-06** | Select preferred domain name and hosting provider based on upfront and annual renewal pricing. | President / Treasurer | 🔴 Open |
+| **OQ-07** | Confirm that initial photographs, success stories, and metrics are cleared for public display. | Public Image Committee | 🔴 Open |
+| **OQ-08** | Designate responsible party/role for site maintenance and updates after initial developer handover. | Board | 🔴 Open |
 
-## 5. Recommended Decisions for Stakeholder Review
+---
 
-These recommendations reduce ambiguity and keep the first release achievable by one developer before the 30 November 2026 target. They are proposals, not approvals.
+## 7. ✒️ Approvals & Sign-Off
 
-1. **Administrator permissions:** Site Administrator (President plus a named successor) controls admin accounts and global settings; Content Managers from the Board/PIC publish and manage public content; Enquiry Manager (Secretary/designated contact) handles contact submissions. Individual accounts only; no public admin registration or shared passwords.
-2. **Hosting/budget:** managed shared PHP/MySQL hosting for the first year; compare at least two providers; plan around US$50–100 for domain and hosting combined, excluding paid email and extras. Confirm renewal pricing before payment and ensure the club owns the accounts.
-3. **Content management:** events require title, date/time, location, short description; news requires title and body; projects require title, description, date/period. Keep impact measures and images optional. Publish directly for authorized users; prefer archive/soft-delete over permanent deletion.
-4. **Enquiries:** save every enquiry to the protected dashboard; send an email notification only if SMTP is configured and tested. A proposed starting retention period is 12 months after closure, subject to club approval.
+> *Note: Signing below confirms review and acceptance of the Stakeholder Register parameters and engagement approach.*
 
-## 6. Open Stakeholder Questions
-
-| ID | Question / decision | Owner to consult | Status |
-|---|---|---|---|
-| OQ-01 | Approve proposed Site Administrator, Content Manager, and Enquiry Manager roles and role boundaries | President / Board | Proposed for approval |
-| OQ-02 | Confirm named Site Administrators and whether account-management UI is needed for launch | President / Board | Proposed for approval |
-| OQ-03 | Should contact enquiries be stored in the dashboard only, or also trigger tested email notifications? | Board / designated contact | Open |
-| OQ-04 | Approve archive/soft-delete default and permanent-deletion rights | Board / Public Image Committee | Proposed for approval |
-| OQ-05 | Approve recommended required/optional event, news, and project fields | Public Image Committee / Secretary | Proposed for approval |
-| OQ-06 | Select domain/hosting provider and approve upfront and annual renewal price | President / Treasurer / Developer | Open |
-| OQ-07 | Are supplied photographs, stories, and impact figures accurate and approved for public use? | Public Image Committee / content owner | Open |
-| OQ-08 | Who will maintain the site and its content after the developer's initial delivery? | Board | Open |
-
-## 7. Approval
-
-This register identifies expected stakeholders and engagement needs. It
-does not mean that each stakeholder has approved the requirements.
-
-  Approval role                           Name              Decision / date
-  --------------------------------------- ----------------- -----------------
-  Club representative                     To be confirmed   Pending
-  Public Image Committee representative   To be confirmed   Pending
-  Project developer                       To be completed   Pending
+| Approval Role | Nominated Stakeholder | Decision / Status | Date |
+| :--- | :--- | :---: | :---: |
+| **Club Representative** | *To be confirmed* | ⏳ Pending | — |
+| **Public Image Committee Rep** | *To be confirmed* | ⏳ Pending | — |
+| **Project Developer** | *To be completed* | ⏳ Pending | — |
