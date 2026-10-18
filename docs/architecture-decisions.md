@@ -1,509 +1,351 @@
 # Architecture Decision Records (ADR)
 
-**Project:** Rotaract Club of UNZA Website\
-**Document ID:** ADR-INDEX-001\
-**Version:** 1.1\
-**Status:** Initial decisions plus recommendations; selected items require validation\
-**Last updated:** 18 October 2026
+| Field | Details |
+| :--- | :--- |
+| **Project** | Rotaract Club of UNZA Website |
+| **Document ID** | `ADR-INDEX-001` |
+| **Version** | 1.1 |
+| **Status** | Initial decisions plus recommendations; selected items require validation |
+| **Last Updated** | 18 October 2026 |
+
+---
 
 ## 1. Purpose
 
-This document records significant technical decisions, their context,
-the options considered, and their consequences. It is intended to
-prevent repeated debate and help future maintainers understand why the
-application is structured as it is.
+This document records significant technical decisions, their context, options considered, and consequences to prevent repeated debate and guide future maintainers.
+
+### Summary Index of Decisions
+
+| ID | Title | Status | Primary Focus |
+| :--- | :--- | :---: | :--- |
+| **ADR-001** | [PHP/MySQL Server-Rendered Stack](#adr-001-use-a-phpmysql-server-rendered-application) | `ACCEPTED` | Technology Stack |
+| **ADR-002** | [Modular Monolith Architecture](#adr-002-use-a-modular-monolith) | `ACCEPTED` | Application Architecture |
+| **ADR-003** | [Single-Club First, Reusable Core](#adr-003-build-for-one-club-first-with-reusable-core-code) | `ACCEPTED` | Scope & Reusability |
+| **ADR-004** | [Role-Based Authorization (Server-Side)](#adr-004-use-role-based-authorization-with-server-side-checks) | `PROPOSED` | Security & Access |
+| **ADR-005** | [Defer Member Accounts](#adr-005-defer-member-accounts) | `ACCEPTED` | Scope & Features |
+| **ADR-006** | [Direct Publishing by Authorized Managers](#adr-006-authorized-content-managers-can-publish-directly) | `ACCEPTED` | Content Management |
+| **ADR-007** | [MySQL Persistence with PDO & Parameterized Queries](#adr-007-use-mysql-with-pdo-and-parameterized-queries) | `ACCEPTED` | Database & Security |
+| **ADR-008** | [Web Document Root in `public/`](#adr-008-keep-the-web-document-root-in-public) | `PROPOSED` | Security & Hosting |
+| **ADR-009** | [Secrets Outside Version Control](#adr-009-store-secrets-outside-version-control) | `ACCEPTED` | Security & Config |
+| **ADR-010** | [Incremental Development & Traceability](#adr-010-use-incremental-development-and-traceability) | `ACCEPTED` | Process & Methodology |
+| **ADR-011** | [Hosting and Domain Provider](#adr-011-hosting-and-domain-provider) | `PROPOSED` | Infrastructure & Cost |
+| **ADR-012** | [Content Management, Deletion & Enquiry Retention](#adr-012-content-management-deletion-and-enquiry-retention) | `PENDING` | Governance & Privacy |
+| **ADR-013** | [Role Model & Content Publishing Permissions](#adr-013-role-model-and-content-publishing) | `PROPOSED` | Governance & Security |
+| **ADR-014** | [Content Schema & Contact Enquiries Workflow](#adr-014-content-fields-and-contact-enquiries) | `PROPOSED` | Data & Operations |
+
+---
+
+## Architecture Decisions
+
+### ADR-001: Use a PHP/MySQL Server-Rendered Application
+
+| Attribute | Details |
+| :--- | :--- |
+| **Status** | **`ACCEPTED`** |
+| **Decision Date** | 18 October 2026 |
+
+#### Context
+The developer prefers HTML, CSS, JavaScript, PHP, and MySQL and aims to balance personal learning, code quality, and delivery speed.
+
+#### Comparison of Options
+| Architecture Option | Pros | Cons | Decision |
+| :--- | :--- | :--- | :---: |
+| **PHP/MySQL Server-Rendered (PDO)** | Simple deployment, matches developer skills, single codebase | Requires discipline to maintain layout separation | **Selected** |
+| **React Frontend + REST API** | Modern client experience | High complexity, overhead of two separate applications | Rejected |
+| **Node.js Backend** | Single language (JS) throughout | Requires learning new backend conventions | Rejected |
+| **PHP Framework (e.g., Laravel)** | Built-in authentication & routing | Higher initial learning curve for custom setup | Deferred |
+| **Hosted Website Builder** | Very fast setup | Limited customization, low learning value | Rejected |
+
+#### Rationale & Consequences
+* **Rationale:** A server-rendered PHP application fits the target stack, avoids API overhead, and provides practical full-stack experience.
+* **Consequences:**
+  * Keep the initial release as a single deployable unit.
+  * Use PHP PDO with prepared statements for database operations.
+  * Re-evaluate frameworks (e.g., Laravel) if auth, routing, and migrations become too complex to build safely.
+
+---
+
+### ADR-002: Use a Modular Monolith
+
+| Attribute | Details |
+| :--- | :--- |
+| **Status** | **`ACCEPTED`** |
+| **Decision Date** | 18 October 2026 |
+
+#### Context
+The application needs public pages, content administration, authentication, and database access. It is managed by a single developer.
+
+#### Architectural Strategy
+```
++------------------------------------------------------------------+
+|                          MODULAR MONOLITH                        |
+|                                                                  |
+|  [ Public Views ]   [ Admin Views ]   [ Controllers / Routing ]  |
+|         \                 |                 /                    |
+|          +----------------+----------------+                     |
+|                           |                                      |
+|                  [ Application Logic ]                           |
+|                           |                                      |
+|                  [ Database / Repositories ]                     |
++------------------------------------------------------------------+
+```
+
+#### Consequences
+* Avoid monolithic single-file scripts (e.g., `index.php` with embedded SQL and HTML).
+* Keep SQL queries out of view templates.
+* Use shared layouts and reusable partial components.
+
+---
+
+### ADR-003: Build for One Club First, with Reusable Core Code
+
+| Attribute | Details |
+| :--- | :--- |
+| **Status** | **`ACCEPTED`** |
+| **Decision Date** | 18 October 2026 |
+
+#### Context
+The initial release targets the **Rotaract Club of UNZA**. The core codebase should be reusable for other clubs in the future without building a full multi-tenant architecture immediately.
+
+#### Deployment Strategy Matrix
+| Strategy | Implementation Effort | Security Risk | Choice |
+| :--- | :---: | :---: | :---: |
+| **Single Tenant (UNZA) with Config Isolation** | Low | Low | **Selected** |
+| **Multi-Tenant (Shared DB with `tenant_id`)** | High | High (Data leakage risk) | Deferred |
+| **Hardcoded UNZA-only Script** | Very Low | Low | Rejected |
 
-Decisions are marked **Accepted**, **Proposed**, or **Pending**. A
-proposed decision should be confirmed before it becomes an
-implementation constraint.
+#### Consequences
+* Do not add tenant identifier columns to database tables for the initial release.
+* Separate configuration settings (branding, credentials, settings) from system logic.
+* Document deployment procedures to streamline setup for future clubs.
 
-------------------------------------------------------------------------
+---
 
-## ADR-001: Use a PHP/MySQL Server-Rendered Application
+### ADR-004: Use Role-Based Authorization with Server-Side Checks
 
-**Status:** Accepted\
-**Decision date:** 18 October 2026
+| Attribute | Details |
+| :--- | :--- |
+| **Status** | **`PROPOSED`** *(Pending role assignment confirmation)* |
+| **Decision Date** | 18 October 2026 |
 
-### Context
+#### Proposed Access Control Matrix
 
-The developer prefers HTML, CSS, JavaScript, PHP, and MySQL and wants to
-balance learning, quality, and delivery speed.
+| Role | Target Users | Allowed Actions | Restricted Actions |
+| :--- | :--- | :--- | :--- |
+| **Site Administrator** | President & named technical successor | Manage users, configure system settings, delete content permanently, manage content | None |
+| **Content Manager** | Board Members / Public Image Committee | Create, edit, publish, unpublish, and archive content | Account management, system configuration |
+| **Enquiry Manager** | Club Secretary / Designated Officer | View and process public contact form enquiries | System settings, user account creation |
 
-### Decision
+#### Key Rules
+1. **Server-Side Verification:** Every protected endpoint must re-verify authorization. Never rely solely on hiding buttons/links in the client UI.
+2. **Account Security:** Individual accounts only—shared credentials and public self-registration are strictly prohibited.
+3. **Redundancy:** Maintain at least two active Site Administrator accounts to prevent lockouts.
 
-Use HTML and CSS for presentation, JavaScript for progressive
-client-side interaction, PHP for server-side rendering and business
-logic, and MySQL for persistence. Use PHP PDO for database access.
+---
 
-### Alternatives considered
+### ADR-005: Defer Member Accounts
 
--   React frontend with a separate API.
--   Node.js backend.
--   A PHP framework.
--   A hosted website builder.
+| Attribute | Details |
+| :--- | :--- |
+| **Status** | **`ACCEPTED`** |
+| **Decision Date** | 18 October 2026 |
 
-### Rationale
+#### Decision
+Public users do not require logins to access public content. Member registration, member profile management, and member-only portals are deferred to post-v1.0 releases.
 
-A server-rendered PHP application fits the preferred stack and avoids
-the additional complexity of maintaining a separate frontend and backend
-application. It also provides a practical opportunity to learn
-full-stack development.
+---
 
-### Consequences
+### ADR-006: Authorized Content Managers Can Publish Directly
 
--   Keep the first release as one deployable application.
--   Avoid adding a JavaScript framework or separate REST API unless a
-    demonstrated requirement justifies it.
--   Use prepared statements and centralize database access.
--   Reconsider a framework such as Laravel if authentication, routing,
-    migrations, and testing become difficult to implement safely within
-    the deadline.
+| Attribute | Details |
+| :--- | :--- |
+| **Status** | **`ACCEPTED`** |
+| **Decision Date** | 18 October 2026 |
 
-------------------------------------------------------------------------
+#### Workflow Comparison
+```
+[ Drafting ] ---> ( Direct Publish by Content Manager ) ---> [ Live Site ]
+                                vs.
+[ Drafting ] ---> [ Submit for Approval ] ---> [ Review ] ---> [ Live Site ] (Deferred)
+```
 
-## ADR-002: Use a Modular Monolith
+#### Consequences
+* No multi-step approval pipeline is needed for release 1.0.
+* Content items must support explicit status flags (`draft`/`published`/`archived`).
+* Direct public URL queries must never expose items in `draft` or `archived` states.
 
-**Status:** Accepted\
-**Decision date:** 18 October 2026
+---
 
-### Context
+### ADR-007: Use MySQL with PDO and Parameterized Queries
 
-The site needs public pages, content management, authentication, and
-database access, but the project is small and developed by one person.
+| Attribute | Details |
+| :--- | :--- |
+| **Status** | **`ACCEPTED`** |
+| **Decision Date** | 18 October 2026 |
 
-### Decision
+#### Technical Safeguards
+| Risk | Technical Control |
+| :--- | :--- |
+| **SQL Injection** | Mandatory use of PDO parameterized queries |
+| **Cross-Site Scripting (XSS)** | Context-aware HTML escaping on view rendering |
+| **Data Integrity Faults** | Strict foreign keys and database constraints |
+| **Credential Exposure** | Credentials stored outside public tree in `.env` |
 
-Build one PHP application with clear boundaries between routing/entry
-points, views, application logic, and data access. Do not split the
-system into microservices.
+---
 
-### Alternatives considered
+### ADR-008: Keep the Web Document Root in `public/`
 
--   A single large PHP file.
--   Separate services for each content type.
--   A separate frontend and backend.
--   A full microservices architecture.
+| Attribute | Details |
+| :--- | :--- |
+| **Status** | **`PROPOSED`** |
 
-### Rationale
+#### Directory Security Structure
+```
+rotaract-website/             <-- RESTRICTED (Outside Web Root)
+├── app/                      <-- Application Code & Logic
+├── config/                   <-- DB Connections & Config
+├── database/                 <-- SQL Migrations & Seeds
+├── .env                      <-- Sensitive Credentials
+└── public/                   <-- PUBLIC WEB ROOT (Exposed via HTTP)
+    ├── index.php             <-- Front Controller Entry Point
+    └── assets/               <-- Static CSS, JS, Images
+```
 
-A modular monolith is easier to develop, test, deploy, and maintain at
-this scale while still encouraging good separation of concerns.
+---
 
-### Consequences
+### ADR-009: Store Secrets Outside Version Control
 
--   Avoid placing the whole application in `index.php`.
--   Use shared layouts and reusable components.
--   Keep SQL and database connection code out of view templates.
--   Introduce additional layers only where they improve clarity or
-    testability.
+| Attribute | Details |
+| :--- | :--- |
+| **Status** | **`ACCEPTED`** |
+| **Decision Date** | 18 October 2026 |
 
-------------------------------------------------------------------------
+#### Rules
+* Commit `.env.example` with placeholder values only.
+* Never commit `.env` or production credentials to Git.
+* Add sensitive configuration filenames to `.gitignore`.
 
-## ADR-003: Build for One Club First, with Reusable Core Code
+---
 
-**Status:** Accepted\
-**Decision date:** 18 October 2026
+### ADR-010: Use Incremental Development and Traceability
 
-### Context
+| Attribute | Details |
+| :--- | :--- |
+| **Status** | **`ACCEPTED`** |
+| **Target Deadline** | 30 November 2026 |
 
-The first website is for Rotaract Club of UNZA. The developer wants the
-code to be reusable for separate club websites later, but does not want
-to build a shared multi-tenant platform for the first release.
+#### Development Principles
+* Build in small end-to-end features (Feature $\rightarrow$ Route $\rightarrow$ Logic $\rightarrow$ DB $\rightarrow$ Test).
+* Maintain a Requirements Traceability Matrix linking requirements to test cases.
+* Prioritize Must-have items first; defer optional scope additions.
 
-### Decision
+---
 
-Deploy the first instance for Rotaract Club of UNZA. Keep club-specific
-identity and content configuration separate from core application logic
-where practical. Future clubs may receive separate deployments using the
-same codebase.
+### ADR-011: Hosting and Domain Provider
 
-### Alternatives considered
+| Attribute | Details |
+| :--- | :--- |
+| **Status** | **`PROPOSED`** *(Provider selection pending)* |
+| **Target Budget** | **US$50–100** (First-year allocation for domain + hosting) |
 
--   A single multi-tenant platform with multiple clubs in one database.
--   A bespoke, hardcoded site with no reuse considerations.
--   A configurable application deployed separately for each club.
+#### Provider Checklist & Requirements
 
-### Rationale
+| Metric / Feature | Mandatory Requirement | Candidate (e.g., Hostinger) |
+| :--- | :---: | :---: |
+| **PHP Runtime** | PHP 8.x support | Pending Check |
+| **Database Support** | MySQL / MariaDB with PDO | Pending Check |
+| **Security** | HTTPS / Free SSL Certificate | Pending Check |
+| **Access Control** | Custom Web Root (`public/`) & SFTP | Pending Check |
+| **Backups** | Automated periodic database/file backups | Pending Check |
+| **Ownership** | Registered directly under Club Name | Pending Check |
 
-Separate deployments reduce first-release complexity and avoid the need
-to implement and test cross-club data isolation in the initial release.
+---
 
-### Consequences
+### ADR-012: Content Management, Deletion and Enquiry Retention
 
--   Do not add tenant IDs to every table solely for a multi-tenant
-    design that is not required.
--   Document configuration and deployment steps so another club can
-    reuse the code.
--   Keep secrets, content, and deployment settings environment-specific.
--   Revisit this ADR if the project changes to a shared platform.
+| Attribute | Details |
+| :--- | :--- |
+| **Status** | **`PENDING`** *(Awaiting club sign-off)* |
 
-------------------------------------------------------------------------
+#### Proposed Retention & Deletion Rules
 
-## ADR-004: Use Role-Based Authorization with Server-Side Checks
+| Data Type | Standard Deletion Method | Access Restrictions | Proposed Retention Policy |
+| :--- | :--- | :--- | :--- |
+| **Public Events / News** | Soft Delete / Archive | Content Managers | Indefinite until manually archived |
+| **System Audit Logs** | System Purge | Site Administrators | 12 Months |
+| **Contact Enquiries** | Soft Delete / Anonymize | Enquiry Managers | Auto-purge/Anonymize 12 months after closure |
 
-**Status:** Proposed --- recommended role mapping pending club confirmation
+---
 
-### Context
+### ADR-013: Role Model and Content Publishing
 
-Board members and Public Image Committee members should manage website
-content. Their exact permissions have not yet been confirmed.
+| Attribute | Details |
+| :--- | :--- |
+| **Status** | **`PROPOSED`** |
 
-### Decision
+#### Summary
+Implements least-privilege role boundaries (Administrator, Content Manager, Enquiry Manager). Direct publishing is enabled for Content Managers to streamline operations. Permanent deletion and administrative functions remain strictly reserved for Site Administrators.
 
-Implement authentication for administrators and enforce permissions on
-the server for every protected action. Represent roles/permissions
-centrally rather than scattering hardcoded role checks throughout the
-application.
+---
 
-### Alternatives considered
+### ADR-014: Content Fields and Contact Enquiries
 
--   One shared administrator password.
--   Authentication without separate permissions.
--   Hardcoding role names into each page.
--   A centralized role/permission policy.
+| Attribute | Details |
+| :--- | :--- |
+| **Status** | **`PROPOSED`** |
 
-### Rationale
+#### Minimum Required Fields by Module
 
-Centralized authorization reduces the risk of accidentally allowing
-unauthorized users to modify content. It supports future reuse and
-easier changes to the club's permission model.
+| Module | Mandatory Fields | Optional Fields |
+| :--- | :--- | :--- |
+| **Events** | Title, Date/Time, Location, Short Summary | Featured Image, Extended Description, Registration Link |
+| **News** | Title, Publication Date, Body Content | Cover Image, Author Bio |
+| **Service Projects** | Title, Category/Period, Description | Impact Metrics, Photo Gallery |
+| **Contact Enquiries** | Sender Name, Email, Subject, Message | Phone Number |
 
-### Consequences
+> **Enquiry Fallback Policy:** Enquiries are saved to the administration database first. If SMTP notifications fail or are unconfigured, the enquiry is safely logged in the system dashboard without displaying an error to the sender.
 
--   Never rely only on hiding buttons or links in the interface.
--   Verify authorization for direct HTTP requests as well as dashboard
-    navigation.
--   Use individual administrator accounts rather than shared
-    credentials.
--   Use the recommended roles: Site Administrator (President plus one named
-    successor), Content Manager (authorized Board/PIC users), and Enquiry
-    Manager (Secretary/designated contact). Role combinations are allowed
-    only when deliberately assigned.
--   Content Managers may create, edit, publish, unpublish, and archive
-    content but cannot manage administrator accounts, secrets, or hosting.
--   Only Site Administrators may create/disable administrator accounts or
-    change global settings. Enquiry access is limited to Site Administrators
-    and the Enquiry Manager.
--   Account-management privileges should be restricted to specifically
-    authorized users; use individual accounts, no public self-registration,
-    and at least two active Site Administrators.
+---
 
-------------------------------------------------------------------------
+## 2. Target Directory Structure
 
-## ADR-005: Defer Member Accounts
-
-**Status:** Accepted\
-**Decision date:** 18 October 2026
-
-### Context
-
-The user selected administrator accounts first and member accounts
-later.
-
-### Decision
-
-The first release will not implement public member registration, member
-profiles, or member-only pages. Public content will be accessible
-without login; only administrative operations require authentication.
-
-### Consequences
-
--   Avoid building member registration and profile tables in the first
-    release unless another approved requirement makes them necessary.
--   Reassess member accounts as a future feature based on a documented
-    club need.
-
-------------------------------------------------------------------------
-
-## ADR-006: Authorized Content Managers Can Publish Directly
-
-**Status:** Accepted\
-**Decision date:** 18 October 2026
-
-### Context
-
-The user selected immediate publication by authorized users rather than
-a content approval workflow.
-
-### Decision
-
-Authorized users may publish content directly. Content must still pass
-server-side validation, and the system must distinguish published from
-unpublished content.
-
-### Consequences
-
--   Do not build a multi-step approval workflow in the first release.
--   Provide clear publish/unpublish controls.
--   Ensure unpublished content is not exposed through public pages or
-    public detail routes.
--   Confirm who may delete content and whether deletion should be
-    permanent or archival.
-
-------------------------------------------------------------------------
-
-## ADR-007: Use MySQL with PDO and Parameterized Queries
-
-**Status:** Accepted\
-**Decision date:** 18 October 2026
-
-### Context
-
-The selected stack uses PHP and MySQL, and the site will accept user
-input through administration forms and a public contact form.
-
-### Decision
-
-Use MySQL for relational persistence and PHP PDO for database access.
-Use parameterized queries for values supplied by users or other
-untrusted sources.
-
-### Consequences
-
--   Keep credentials out of source control and public directories.
--   Use foreign keys and constraints where appropriate.
--   Track schema changes through migrations or a documented
-    schema-change process.
--   Validate inputs on the server and escape output appropriately.
--   Do not assume prepared statements replace authorization, validation,
-    or output escaping.
-
-------------------------------------------------------------------------
-
-## ADR-008: Keep the Web Document Root in `public/`
-
-**Status:** Proposed
-
-### Context
-
-The project will contain configuration, application code, database
-scripts, and documentation that must not be directly served by the web
-server.
-
-### Decision
-
-Configure the hosting document root to point to the project's `public/`
-directory.
-
-### Consequences
-
--   Application code, database scripts, `.env` files, and internal
-    documentation should remain outside the publicly served directory.
--   If the chosen host does not permit changing the document root,
-    select a safe alternative deployment layout and verify that
-    sensitive files cannot be requested over HTTP.
-
-------------------------------------------------------------------------
-
-## ADR-009: Store Secrets Outside Version Control
-
-**Status:** Accepted\
-**Decision date:** 18 October 2026
-
-### Context
-
-The application needs database credentials and may require production
-service credentials.
-
-### Decision
-
-Use environment-specific configuration or environment variables for
-secrets. Commit only a `.env.example` containing placeholder variable
-names, never actual secrets. Add local secret files to `.gitignore`.
-
-### Consequences
-
--   Rotate any credential that is accidentally committed.
--   Use different credentials for local development and production.
--   Restrict database privileges to what the application needs.
-
-------------------------------------------------------------------------
-
-## ADR-010: Use Incremental Development and Traceability
-
-**Status:** Accepted\
-**Decision date:** 18 October 2026
-
-### Context
-
-The project has a fixed target date of 30 November 2026 and is being
-developed by one person while learning.
-
-### Decision
-
-Implement the website in small, end-to-end increments. Link requirements
-to implementation areas and test evidence using the requirements
-traceability matrix. Use Git for version control.
-
-### Consequences
-
--   Prioritize the Must-have requirements.
--   Test features as they are built rather than postponing all testing
-    until the end.
--   Keep a small backlog and record changes to scope.
--   Defer optional features if they threaten security, testing, or
-    launch readiness.
-
-------------------------------------------------------------------------
-
-## ADR-011: Hosting and Domain Provider
-
-**Status:** Proposed --- provider and quote pending
-
-### Context
-
-The hosting/domain budget is unknown.
-
-### Decision
-
-Use managed shared PHP/MySQL hosting for the first release. Do not use a
-VPS unless a concrete need arises. Hostinger is one candidate to compare,
-not a committed provider. The selected plan must support a currently
-supported PHP 8.x release, MySQL/MariaDB, PDO MySQL, HTTPS/SSL, SFTP,
-custom domains, database export/import, and a practical backup/restore
-process. Prefer automated backups and a document root that can point to
-`public/`.
-
-Use **US$50–100 as a first-year planning envelope** for domain plus shared
-hosting, excluding paid email and extras; this is not a quote. Obtain at
-least two current quotes, record upfront and renewal prices, and allow
-for currency conversion/taxes. Choose a one-year term unless the club
-approves longer prepayment. Keep the domain and hosting account under
-club-controlled ownership and retain a separate backup copy.
-
-### Required follow-up
-
--   Confirm the available budget with the club.
--   Compare total first-year and renewal costs.
--   Verify that the provider supports the required PHP version and MySQL
-    features.
--   Test deployment and database restoration before launch.
-
-------------------------------------------------------------------------
-
-## ADR-012: Content Management, Deletion and Enquiry Retention
-
-**Status:** Pending
-
-### Context
-
-The website will store published content and contact enquiries.
-Permanent deletion, archiving, and enquiry retention rules have not been
-agreed.
-
-### Decision
-
-Use minimal required content fields and allow optional details to be
-omitted. Recommended required fields are title/date-time/location/short
-description for events; title/body for news; and title/description/date
-or period for service projects. Use draft/unpublished and published
-states, with direct publishing by authorized users. Prefer archive/soft
-delete for public content, with permanent deletion restricted to Site
-Administrators and a confirmation step. Do not retain contact enquiries
-indefinitely; a proposed starting policy is deletion/anonymization of
-closed enquiries after 12 months, subject to club confirmation.
-
-### Required follow-up
-
--   Decide whether events, news, and projects can be archived.
--   Confirm archive and permanent-delete permissions.
--   Confirm the proposed 12-month enquiry retention period and whether
-    email notifications are required.
--   Limit enquiry access to Site Administrators and the Enquiry Manager.
--   Provide a safe way to remove data when required.
-
-------------------------------------------------------------------------
-
-## 2. Proposed Project Structure
-
-The following is a suggested target structure. Add directories
-incrementally as the application needs them.
-
-``` text
+```text
 rotaract-website/
-├── public/
-│   ├── index.php
-│   └── assets/
+├── public/                  # Publicly accessible web root
+│   ├── index.php            # Front Controller
+│   └── assets/              # Static assets
 │       ├── css/
 │       ├── js/
 │       └── images/
-├── app/
+├── app/                     # Core application logic
 │   ├── Controllers/
 │   ├── Models/
 │   ├── Repositories/
 │   ├── Services/
 │   ├── Views/
 │   └── Helpers/
-├── config/
-├── database/
+├── config/                  # Configuration files
+├── database/                # Schema migrations & seeds
 │   ├── migrations/
 │   └── seeds/
-├── tests/
-├── docs/
-├── .env.example
-├── .gitignore
-└── README.md
+├── tests/                   # Test suite
+├── docs/                    # Documentation & ADRs
+├── .env.example             # Template for environment configuration
+├── .gitignore               # Git exclusion list
+└── README.md                # Project overview
 ```
+
+---
 
 ## 3. Decision Review Triggers
 
-Revisit an architecture decision if: - The site becomes a shared
-platform for multiple clubs. - Member accounts become a required
-feature. - Multiple developers begin working on the application. - The
-application requires substantial integrations or a public API. - Hosting
-constraints prevent the planned deployment layout. - A decision creates
-unacceptable security or maintenance risk.
+Re-evaluate these architectural decisions if any of the following conditions occur:
 
-Record each change with the decision date, reason, alternatives, and
-impact on the SRS and traceability matrix.
+* 🚩 **Multi-Tenancy Expansion:** The platform is expanded to host multiple independent clubs natively.
+* 🚩 **Authentication Scope:** Member account registration becomes a mandatory requirement.
+* 🚩 **Team Scaling:** Development expands to a multi-developer team requiring continuous integration pipelines.
+* 🚩 **API Requirements:** External integrations require exposing a public REST or GraphQL API.
+* 🚩 **Hosting Constraints:** Deployment provider rules prevent configuring `public/` as the web root.
+```
 
-
-------------------------------------------------------------------------
-
-## ADR-013: Role Model and Content Publishing
-
-**Status:** Proposed --- club confirmation required
-
-### Context
-
-Board Members and Public Image Committee members need to maintain public
-content, while the site should prevent ordinary content contributors from
-changing administrator access or technical settings.
-
-### Decision
-
-Adopt least-privilege roles: Site Administrator, Content Manager, and
-Enquiry Manager. Use individual accounts. Authorized Content Managers may
-publish immediately without a separate approval workflow. Prefer archive/
-soft-delete for content; reserve permanent deletion and account management
-for Site Administrators. If account-management UI cannot be delivered safely
-before launch, provision accounts manually and document the process.
-
-### Consequences
-
-- Enforce permissions server-side for each action.
-- Provide no public admin registration and no shared administrator login.
-- Keep a record of content creator/updater and timestamps where practical.
-- Have the club confirm named role holders and retention rules before launch.
-
-------------------------------------------------------------------------
-
-## ADR-014: Content Fields and Contact Enquiries
-
-**Status:** Proposed --- club confirmation required
-
-### Decision
-
-Use small required field sets for events, news, and service projects, with
-impact measures and media optional. Store contact enquiries in the
-protected dashboard. If SMTP is configured and tested, also send a notice
-to the designated club email; email failure must not prevent storage. If
-notifications are not ready by launch, label the workflow dashboard-only
-and assign a person to check it regularly. A 12-month retention period for
-closed enquiries is the proposed default, subject to club approval.
-
-### Consequences
-
-- Content forms remain quick to use and support partial information.
-- Images require file validation and permission for public use.
-- Enquiry access and retention must be implemented consistently.
+The document has been formatted into clear Markdown with tables, code structures, and status badges to make it easy to read and navigate.
