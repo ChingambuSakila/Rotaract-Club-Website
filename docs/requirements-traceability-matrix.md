@@ -1,206 +1,110 @@
-# Requirements Traceability Matrix
+# Requirements Traceability Matrix (RTM)
 
-**Project:** Rotaract Club of UNZA Website\
-**Document ID:** RTM-001\
-**Version:** 1.1\
-**Status:** Initial baseline v1.1 --- recommendations added; validate before implementation\
-**Last updated:** 18 October 2026
+## Document Control & Metadata
+
+| Attribute | Details |
+| :--- | :--- |
+| **Project Name** | Rotaract Club of UNZA Website |
+| **Document ID** | RTM-001 |
+| **Version** | 1.1 |
+| **Status** | Initial baseline v1.1 --- recommendations added; validate before implementation |
+| **Last Updated** | 18 October 2026 |
+
+---
 
 ## 1. Purpose
 
-This matrix links requirements to their stakeholder need, planned
-implementation area, and validation evidence. It helps ensure that each
-requirement is addressed and that each implemented feature has a reason
-to exist.
+This matrix links functional and non-functional requirements to their underlying stakeholder needs, planned implementation components, and corresponding validation/testing evidence. It ensures end-to-end traceability across the project lifecycle so that every requirement is implemented, verified, and justified.
 
-Implementation paths and test IDs are proposed and should be updated to
-match the final codebase and test suite.
+---
 
-## 2. Traceability Matrix
+## 2. Requirements Traceability Matrix
 
-  -------------------------------------------------------------------------------------------------------------------------------------------------------------
-  Stakeholder need Requirement   Requirement summary                    Priority       Planned component               Planned validation evidence  Status
-  / source         ID                                                                                                                               
-  ---------------- ------------- -------------------------------------- -------------- ------------------------------- ---------------------------- -----------
-  Professional     FR-001        Homepage with club identity and        Must           Public homepage / views         TC-PUB-001: homepage content Not started
-  public presence                featured content                                                                      and navigation check         
+### 2.1 Functional Requirements (FR)
 
-  Visitors need    FR-002        About the Club page                    Must           Public pages / views            TC-PUB-002: page             Not started
-  club information                                                                                                     availability and content     
-                                                                                                                       check                        
+| Stakeholder Need / Source | Req ID | Requirement Summary | Priority | Planned Component | Planned Validation Evidence | Status |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Professional public presence** | `FR-001` | Homepage with club identity and featured content | **Must** | Public homepage / views | `TC-PUB-001`: Homepage content and navigation check | Not started |
+| **Visitors need club information** | `FR-002` | About the Club page | **Must** | Public pages / views | `TC-PUB-002`: Page availability and content check | Not started |
+| **Visitors need event information** | `FR-003` | List published events | **Must** | Events module | `TC-EVT-001`: Listing, ordering, empty state, and unpublished check | Not started |
+| **Club needs to maintain events** | `FR-004` | Create / edit / publish / unpublish / delete events | **Must** | Event controller, service, repository, and admin views | `TC-EVT-002`: CRUD & validation;<br>`TC-SEC-001`: Authorization | Not started |
+| **Public needs announcements** | `FR-005` | Display published news articles | **Must** | News module | `TC-NEWS-001`: Published vs. unpublished visibility check | Not started |
+| **Club needs to publish news** | `FR-006` | Manage news articles | **Must** | News management controller & admin views | `TC-NEWS-002`: Create, edit, publish, delete, and validation | Not started |
+| **Public needs service impact** | `FR-007` | Display service projects and impact reports | **Must** | Projects module | `TC-PRJ-001`: Project listing and detail page check | Not started |
+| **Club needs project records** | `FR-008` | Manage project content | **Must** | Project management module | `TC-PRJ-002`: Create, edit, publish, and authorization checks | Not started |
+| **Visitors need to contact club** | `FR-009` | Public contact form | **Must** | Contact page & request handler | `TC-CON-001`: Valid/invalid input and basic spam protection | Not started |
+| **Club needs to review enquiries** | `FR-010` | Store and protect submitted enquiries | **Must** | Enquiry persistence & admin module | `TC-CON-002`: Data persistence, access restriction, and error handling | Not started |
+| **Admins need protected access** | `FR-011` | Admin login and logout | **Must** | Authentication service & login views | `TC-AUTH-001`: Valid/invalid login & session invalidation | Not started |
+| **Restricted access required** | `FR-012` | Server-side authorization | **Must** | Authorization middleware / helpers | `TC-SEC-001`: Unauthenticated and unauthorized access tests | Not started |
+| **Admins need management UI** | `FR-013` | Administrative dashboard | **Must** | Admin layout & dashboard view | `TC-ADM-001`: Dashboard access and role-based navigation | Not started |
+| **No code edits for content** | `FR-014` | Dashboard content management | **Must** | Admin forms & content modules | `TC-ADM-002`: Update content via UI and verify public change | Not started |
+| **Club details maintenance** | `FR-015` | Update agreed club details | **Must** | Settings / configuration module | `TC-SET-001`: Update approved fields and verify frontend display | Not started |
+| **Admin user administration** | `FR-016` | Create / disable / reset admin accounts | **Should** | Account administration UI / service | `TC-ADM-003`: Role restriction and disabled-account tests | Pending decision |
+| **Future reuse for other clubs** | `FR-017` | Keep club identity configurable | **Should** | Configuration / environment files | `TC-ARCH-001`: Re-skin/re-configure test without core code edits | Not started |
+| **Member portal deferred** | `FR-018` | No member accounts in release one | **Must** | Scope / route design | `TC-SCOPE-001`: Confirm absence of public user registration | Confirmed scope |
 
-  Visitors need    FR-003        List published events                  Must           Events module                   TC-EVT-001: listing,         Not started
-  event                                                                                                                ordering, empty state,       
-  information                                                                                                          unpublished event check      
+---
 
-  Club needs to    FR-004        Create/edit/publish/unpublish/delete   Must           Event                           TC-EVT-002: CRUD and         Not started
-  maintain event                 events                                                controller/service/repository   validation; TC-SEC-001:      
-  details                                                                              and admin views                 authorization                
+### 2.2 Non-Functional Requirements (NFR)
 
-  Public needs     FR-005        Display published news                 Must           News module                     TC-NEWS-001:                 Not started
-  current                                                                                                              published/unpublished        
-  announcements                                                                                                        visibility check             
+| Category / Focus | Req ID | Requirement Summary | Priority | Planned Component | Planned Validation Evidence | Status |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Responsive UI** | `NFR-001` | Usable at representative viewport widths | **Must** | CSS / Layout components | `TC-UI-001`: Viewport checks at 360px, 768px, and 1280px | Not started |
+| **Usability** | `NFR-002` | Consistent navigation and validation feedback | **Must** | Shared views & form components | `TC-UX-001`: Navigation and form usability review | Not started |
+| **SQL Safety** | `NFR-003` | PDO prepared statements for untrusted values | **Must** | Data access layer (Repository/PDO) | `TC-SEC-002`: Source code review & SQL injection penetration tests | Not started |
+| **Password Storage** | `NFR-004` | Password hashing and verification (`password_hash`) | **Must** | Authentication service | `TC-SEC-003`: Database password hash inspection & verification test | Not started |
+| **Input Handling** | `NFR-005` | Strict server-side validation | **Must** | Request handlers / services | `TC-VAL-001`: Boundary value, missing input, and malformed input tests | Not started |
+| **CSRF Defense** | `NFR-006` | CSRF protection on state-changing requests | **Must** | Middleware / Request handlers | `TC-SEC-004`: Form submission with missing/invalid CSRF token | Not started |
+| **XSS Defense** | `NFR-007` | Contextual output escaping & sanitization | **Must** | View rendering engine / templates | `TC-SEC-005`: Stored and reflected XSS payload testing | Not started |
+| **Session Security** | `NFR-008` | Secure session handling and protected routes | **Must** | Session manager & server configuration | `TC-SEC-006`: Session fixation, cookie flags, and direct URL tests | Not started |
+| **Secret Protection** | `NFR-009` | Secrets excluded from public files & repository | **Must** | Environment setup (`.env` strategy) | `TC-SEC-007`: Repository scan and deployment config audit | Not started |
+| **Maintainability** | `NFR-010` | Separate presentation, logic, and data layers | **Must** | Overall project structure | `TC-ARCH-002`: Code structure review and setup documentation check | Not started |
+| **Compatibility** | `NFR-011` | Cross-browser & device testing | **Must** | Complete web application | `TC-COMP-001`: Test matrix against major mobile/desktop browsers | Not started |
+| **Accessibility** | `NFR-012` | WCAG 2.2 AA alignment where applicable | **Should** | Front-end templates | `TC-A11Y-001`: Keyboard navigation, form labels, contrast & alt-text | Not started |
+| **Performance** | `NFR-013` | Measure public pages and document results | **Should** | Assets & Core Web Vitals | `TC-PERF-001`: Lab measurement (Lighthouse / PageSpeed Insights) | Not started |
+| **Data Recovery** | `NFR-014` | Documented backup and restore procedure | **Must** | Operational scripts / DB procedures | `TC-OPS-001`: Database backup generation and test environment restore | Not started |
+| **Error Handling** | `NFR-015` | No sensitive technical details leaked in production | **Must** | Exception handlers & loggers | `TC-SEC-008`: Trigger controlled errors and inspect responses/logs | Not started |
 
-  Club needs to    FR-006        Manage news articles                   Must           News management                 TC-NEWS-002:                 Not started
-  maintain                                                                                                             create/edit/publish/delete   
-  announcements                                                                                                        and validation               
-
-  Public needs to  FR-007        Display service projects and impact    Must           Projects module                 TC-PRJ-001: project listing  Not started
-  understand                     reports                                                                               and detail check             
-  service impact                                                                                                                                    
-
-  Club needs to    FR-008        Manage project content                 Must           Project management              TC-PRJ-002:                  Not started
-  maintain project                                                                                                     create/edit/publish and      
-  records                                                                                                              authorization                
-
-  Visitors need to FR-009        Public contact form                    Must           Contact page and request        TC-CON-001: valid/invalid    Not started
-  contact the club                                                                     handler                         input and spam control       
-
-  Club needs to    FR-010        Store and protect submitted enquiries  Must           Enquiry persistence and admin   TC-CON-002: persistence,     Not started
-  review enquiries                                                                     view                            access restriction, error    
-                                                                                                                       handling                     
-
-  Administrators   FR-011        Login and logout                       Must           Authentication service and      TC-AUTH-001: valid/invalid   Not started
-  need protected                                                                       login views                     login and logout/session     
-  access                                                                                                               invalidation                 
-
-  Protected        FR-012        Server-side authorization              Must           Authorization                   TC-SEC-001: unauthenticated  Not started
-  operations must                                                                      middleware/helpers/policies     and unauthorized request     
-  be restricted                                                                                                        tests                        
-
-  Administrators   FR-013        Administrative dashboard               Must           Admin layout and dashboard      TC-ADM-001: dashboard access Not started
-  need a                                                                                                               and navigation               
-  management                                                                                                                                        
-  interface                                                                                                                                         
-
-  Content must be  FR-014        Dashboard content management           Must           Admin forms and content modules TC-ADM-002: update content   Not started
-  managed without                                                                                                      through UI and verify public 
-  code edits                                                                                                           change                       
-
-  Club information FR-015        Update agreed club details             Must           Settings/content module         TC-SET-001: update approved  Not started
-  needs                                                                                                                fields and verify display    
-  maintenance                                                                                                                                       
-
-  Controlled       FR-016        Create/disable/reset admin accounts    Should /       Account administration          TC-ADM-003: role restriction Pending
-  administrator                                                         pending                                        and disabled-account tests   decision
-  management may                                                        confirmation                                                                
-  be needed                                                                                                                                         
-
-  Future reuse for FR-017        Keep club identity configurable        Should         Configuration/settings          TC-ARCH-001: change test     Not started
-  other clubs                                                                                                          configuration without        
-                                                                                                                       core-code rewrite            
-
-  Member portal is FR-018        No member accounts in release one      Must / scope   Scope and route design          TC-SCOPE-001: confirm no     Confirmed
-  deferred                                                              constraint                                     public registration or       scope
-                                                                                                                       member-only dependency       
-
-  Responsive       NFR-001       Usable at representative viewport      Must           CSS/layout components           TC-UI-001: 360px, 768px,     Not started
-  experience                     widths                                                                                1280px viewport checks       
-
-  Consistent,      NFR-002       Navigation and validation usability    Must           Shared layout and forms         TC-UX-001: navigation and    Not started
-  understandable                                                                                                       form usability review        
-  interface                                                                                                                                         
-
-  Safe SQL         NFR-003       PDO prepared statements for untrusted  Must           Data access layer               TC-SEC-002: code review and  Not started
-  execution                      values                                                                                SQL injection tests          
-
-  Secure password  NFR-004       Password hashing and verification      Must           Authentication service          TC-SEC-003: inspect stored   Not started
-  storage                                                                                                              hashes and login             
-                                                                                                                       verification                 
-
-  Reliable input   NFR-005       Server-side validation                 Must           Request handlers/services       TC-VAL-001: boundary,        Not started
-  handling                                                                                                             missing, malformed input     
-                                                                                                                       tests                        
-
-  Prevent          NFR-006       CSRF protection for state-changing     Must           Forms/request handlers          TC-SEC-004: missing/invalid  Not started
-  cross-site                     forms                                                                                 token tests                  
-  request forgery                                                                                                                                   
-
-  Prevent          NFR-007       Contextual output escaping and         Must           Views/content rendering         TC-SEC-005: stored/reflected Not started
-  cross-site                     rich-text sanitization if applicable                                                  XSS test cases               
-  scripting                                                                                                                                         
-
-  Protect sessions NFR-008       Secure sessions and protected routes   Must           Authentication and deployment   TC-SEC-006: session          Not started
-  and routes                                                                           configuration                   fixation, cookie flags,      
-                                                                                                                       direct URL tests             
-
-  Protect secrets  NFR-009       No secrets in public files or version  Must           Configuration and deployment    TC-SEC-007: repository and   Not started
-                                 control                                                                               deployment configuration     
-                                                                                                                       review                       
-
-  Maintainable     NFR-010       Separate presentation, logic, and data Must           Project structure               TC-ARCH-002: code review and Not started
-  application                    access                                                                                setup documentation check    
-
-  Browser/device   NFR-011       Test current browsers and              Must           Whole application               TC-COMP-001: documented      Not started
-  compatibility                  representative devices                                                                browser/device checklist     
-
-  Accessibility    NFR-012       Design/test against WCAG 2.2 AA where  Should         Whole interface                 TC-A11Y-001: keyboard,       Not started
-                                 applicable                                                                            labels, contrast, semantics, 
-                                                                                                                       alt-text review              
-
-  Performance      NFR-013       Measure representative pages and       Should         Whole application / assets      TC-PERF-001: documented lab  Not started
-                                 document results                                                                      measurements                 
-
-  Recovery from    NFR-014       Backup and tested restore process      Must           Database/deployment operations  TC-OPS-001: restore a backup Not started
-  data loss                                                                                                            in a test environment        
-
-  Safe error       NFR-015       No sensitive internal details in       Must           Error handling and logging      TC-SEC-008: trigger          Not started
-  handling                       production errors                                                                     controlled errors and        
-                                                                                                                       inspect response/logs        
-  -------------------------------------------------------------------------------------------------------------------------------------------------------------
+---
 
 ## 3. Recommended Baseline Decisions to Validate
 
-| Area | Recommended baseline | Validation evidence |
-|---|---|---|
-| Administrator permissions | Least privilege; individual accounts; Site Administrator manages accounts/settings; Content Managers publish public content; Enquiry Manager handles contact enquiries | Written confirmation of role holders and permissions; tests for permitted and denied actions |
-| Hosting and budget | Managed shared PHP/MySQL hosting; compare at least two providers; US$50–100 planning envelope for domain + hosting in year one, excluding paid email/extras | Quote comparison includes upfront and renewal prices, SSL, backups, PHP/MySQL compatibility, and club ownership |
-| Content fields | Minimal required fields for events/news/projects; optional impact measures and images; direct publishing by authorized users | Public Image Committee and Secretary review forms and sample content |
-| Deletion and enquiries | Prefer archive/soft-delete; permanent deletion restricted to Site Administrators; save enquiries in dashboard; email notification only after SMTP test; proposed 12-month retention after closure | Tests for role restrictions, archive behavior, enquiry access, and approved retention policy |
+| Area | Recommended Baseline | Validation Evidence Required |
+| :--- | :--- | :--- |
+| **Administrator Permissions** | Principle of least privilege; individual accounts; **Site Administrator** manages accounts/settings; **Content Managers** publish updates; **Enquiry Manager** processes contact submissions. | Written confirmation of role assignments; permission authorization test cases (`TC-SEC-001`). |
+| **Hosting & Budget** | Managed shared PHP/MySQL hosting; evaluate at least two options; **US$50–100** year-one budget envelope for domain + hosting (excluding optional paid email). | Provider quote comparison spreadsheet evaluating upfront vs. renewal costs, SSL availability, and backup tooling. |
+| **Content Fields** | Minimal mandatory input fields for events, news, and projects; optional image and impact metrics; direct publishing without multi-step workflow. | Review of form fields and layout mocks by Secretary and Public Image Committee representatives. |
+| **Deletion & Retention** | Soft-delete/archiving preferred over immediate destruction; permanent delete restricted to Site Admin; enquiries stored in DB; 12-month retention for closed enquiries. | Verification of soft-delete functionality in database queries and role-restricted execution of purge actions. |
 
-These are proposed defaults to make implementation concrete. They must
-not be marked accepted until the club representative confirms them.
+---
 
 ## 4. Verification and Validation Rules
 
--   **Verification** checks whether implementation and requirements
-    conform to their specifications.
--   **Validation** checks whether the requirements and delivered website
-    meet stakeholder needs.
--   Every Must requirement should have at least one test or inspection
-    before release.
--   A failed test should be linked to a defect or a formally accepted
-    exception.
--   Requirements changed after approval should be recorded with a date,
-    reason, and impact on schedule, design, and tests.
--   Do not mark a requirement complete solely because code exists;
-    record test evidence.
+* **Verification:** Confirms that the built implementation matches the exact technical specifications.
+* **Validation:** Confirms that the delivered functionality fulfills actual stakeholder operational needs.
+* **Coverage Standard:** Every `Must` priority requirement requires at least one documented passing test result prior to release.
+* **Defect Handling:** Any failed test execution must be mapped to a recorded defect or a formally signed-off exception.
+* **Change Management:** Any requirement revisions following baseline approval must be logged with date, rationale, and impact assessment on schedule, budget, and tests.
 
-## 5. Status Values
+---
 
-Use these status values consistently:
+## 5. Status Definitions
 
--   **Not started:** No implementation work has begun.
--   **In progress:** Work is underway.
--   **Implemented:** Code is present but not yet fully validated.
--   **Tested:** Required test evidence has passed.
--   **Accepted:** The relevant acceptance criteria have been met and,
-    where needed, the stakeholder has accepted the result.
--   **Deferred:** Explicitly postponed with an owner and reason.
--   **Pending decision:** Work depends on an unresolved stakeholder or
-    design decision.
+| Status Code | Meaning |
+| :--- | :--- |
+| **Not started** | Requirement defined; development work has not commenced. |
+| **In progress** | Active development or implementation is underway. |
+| **Implemented** | Code written and deployed to testing, awaiting formal verification. |
+| **Tested** | Required test cases executed and passed with documented evidence. |
+| **Accepted** | Formal stakeholder sign-off obtained against acceptance criteria. |
+| **Deferred** | Postponed to a future release by explicit decision. |
+| **Pending decision** | Implementation blocked awaiting stakeholder policy or architectural choice. |
 
-## 6. Change Log
+---
 
-  -----------------------------------------------------------------------
-  Version                 Date                    Change
-  ----------------------- ----------------------- -----------------------
-  1.0                     18 October 2026         Initial traceability
-                                                  baseline created from
-                                                  the draft SRS.
-  1.1                     18 October 2026         Added proposed role,
-                                                  hosting/budget, and
-                                                  content-management
-                                                  baselines for review.
+## 6. Document Revision Log
 
-  -----------------------------------------------------------------------
+| Version | Date | Description of Changes | Author / Contributor |
+| :--- | :--- | :--- | :--- |
+| **1.0** | 18 October 2026 | Initial requirements traceability baseline derived from SRS draft. | Development Team |
+| **1.1** | 18 October 2026 | Added baseline recommendations for permissions, hosting budget, content schemas, and operational retention. | Senior Editor / Lead Developer |
